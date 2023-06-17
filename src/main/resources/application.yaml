@@ -1,0 +1,23 @@
+# 数据源基本配置
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/nowcoder
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  # 指定mapper映射文件位置
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+
+  # 参数项调整
+  configuration:
+    map-underscore-to-camel-case: true
+
+  type-aliases-package: com.nowcoder.community.pojo
+
+
+logging:
+  level:
+    root: debug
