@@ -42,12 +42,10 @@ public class HomeController {
             map.put("user", user);
             discussPosts.add(map);
         }
-//        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(discussPosts, 5);
-        PageInfo<DiscussPost> pageInfo = new PageInfo<>(list, 5);
 
+        PageInfo<DiscussPost> pageInfo = new PageInfo<>(list, 5);
         model.addAttribute("discussPosts", discussPosts);
         model.addAttribute("pageInfo", pageInfo);
-        log.info("pageInfo={}", pageInfo);
         return "index";
     }
 }

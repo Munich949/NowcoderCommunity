@@ -7,6 +7,19 @@ spring:
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
 
+  mail:
+    host: smtp.qq.com
+    port:
+    username: 2493929776@qq.com
+    password: oikadxbhwbjmeadj
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enabled: true
+    protocol: smtps
+
+
   # 指定mapper映射文件位置
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
