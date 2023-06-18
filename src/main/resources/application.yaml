@@ -1,3 +1,6 @@
+server:
+  port: 8080
+  servlet.context-path: /community
 # 数据源基本配置
 spring:
   datasource:
@@ -27,6 +30,7 @@ mybatis:
   # 参数项调整
   configuration:
     map-underscore-to-camel-case: true
+    use-generated-keys: true
 
   type-aliases-package: com.nowcoder.community.pojo
 
@@ -34,3 +38,7 @@ mybatis:
 logging:
   level:
     root: debug
+
+community:
+  path:
+    domain: localhost:8080
