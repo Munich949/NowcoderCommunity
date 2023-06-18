@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface LoginTicketMapper {
-    String sql = "id, user_id ticket, status, expired";
+    String sql = "id, user_id, ticket, status, expired";
 
     @Select("SELECT " + sql + " FROM login_ticket WHERE ticket = #{ticket}")
     LoginTicket selectByTicket(String ticket);
