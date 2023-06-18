@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * 整合登录和注册
+ */
+
 @Slf4j
 @Controller
 public class LoginController implements CommunityConstant {
@@ -18,16 +22,19 @@ public class LoginController implements CommunityConstant {
     @Autowired
     UserService userService;
 
+    // 获取注册页面
     @GetMapping(value = {"/register"})
     public String getRegisterPage() {
         return "site/register";
     }
 
+    // 获取登录页面
     @GetMapping(value = {"/login"})
     public String getLoginPage() {
         return "site/login";
     }
 
+    // 点击“注册“按钮
     @PostMapping(value = {"/register"})
     public String register(Model model, User user) {
         Map<String, Object> map = userService.register(user);
@@ -40,11 +47,11 @@ public class LoginController implements CommunityConstant {
             model.addAttribute("usernameMsg", map.get("usernameMsg"));
             model.addAttribute("passwordMsg", map.get("passwordMsg"));
             model.addAttribute("emailMsg", map.get("emailMsg"));
-            log.info("model={}",model.getAttribute("user"));
             return "site/register";
         }
     }
 
+    // 激活url http://localhost:8080/community/activation/101/code
     @GetMapping(value = "/activation/{userId}/{code}")
     public String activation(Model model, @PathVariable("userId") Integer userId, @PathVariable("code") String code) {
         int result = userService.activation(userId, code);

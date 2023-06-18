@@ -27,6 +27,7 @@ public class HomeController {
     @Autowired
     private DiscussService discussService;
 
+    // 首页 展示论坛所有话题
     @GetMapping(value = {"/index", "/index/{page}"})
     public String getIndexPage(Model model, @PathVariable(required = false) Integer page) {
         if (page == null) {

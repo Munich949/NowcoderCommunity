@@ -29,9 +29,11 @@ public class UserService implements CommunityConstant {
     @Autowired
     private TemplateEngine templateEngine;
 
+    // 域名
     @Value("${community.path.domain}")
     private String domain;
 
+    // 应用上下文
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
@@ -39,12 +41,15 @@ public class UserService implements CommunityConstant {
         return userMapper.selectById(id);
     }
 
+    // 注册业务
     public Map<String, Object> register(User user) {
+        // 存储注册相关数据出错的map
         Map<String, Object> map = new HashMap<>();
 
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null!");
         }
+        // 有错误就要立即返回 保证业务不继续向下进行
         if (!StringUtils.hasLength(user.getUsername())) {
             map.put("usernameMsg", "用户名不能为空！");
             return map;
@@ -70,17 +75,26 @@ public class UserService implements CommunityConstant {
             return map;
         }
 
+        // 到这里 用户用于注册的相关数据都没有问题 这时就要将相关数据插入数据库中
+        // 设置salt 用随机uuid的前五位
         user.setSalt(CommunityUtil.generateUUID().substring(0, 5));
-        user.setPassword(CommunityUtil.md5(user.getPassword()) + user.getSalt());
+        // 将用户输入的密码和salt拼接 再进行md5加密 很难破解
+        user.setPassword(CommunityUtil.md5(user.getPassword() + user.getSalt()));
+        // 普通用户
         user.setType(0);
+        // 未激活状态 后续还需要进行激活
         user.setStatus(0);
+        // 生成激活码
         user.setActivationCode(CommunityUtil.generateUUID());
+        // 给用户一个随机头像
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
         user.setCreateTime(LocalDateTime.now());
         userMapper.insertUser(user);
 
+        // 向用户填写的邮箱发一个用于激活账号的邮件
         Context context = new Context();
         context.setVariable("email", user.getEmail());
+        // 拼接用于激活的url
         String url = domain + contextPath + "/activation/" + user.getId() + "/" + user.getActivationCode();
         context.setVariable("url", url);
         String content = templateEngine.process("/mail/activation", context);
@@ -89,6 +103,7 @@ public class UserService implements CommunityConstant {
         return map;
     }
 
+    // 激活用户
     public int activation(Integer userId, String code) {
         User user = userMapper.selectById(userId);
         if (user.getStatus() == 1) {
