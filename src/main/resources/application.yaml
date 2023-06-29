@@ -1,6 +1,7 @@
 server:
   port: 8080
-  servlet.context-path: /community
+  servlet:
+    context-path: /community
 # 数据源基本配置
 spring:
   datasource:
@@ -37,8 +38,9 @@ mybatis:
 
 logging:
   level:
-    root: debug
+    root: info
 
 community:
   path:
-    domain: localhost:8080
+    domain: http://localhost:8080
+    upload: f:/nowcoder/upload

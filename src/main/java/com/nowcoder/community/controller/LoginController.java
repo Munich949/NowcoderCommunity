@@ -113,8 +113,9 @@ public class LoginController implements CommunityConstant {
             return "site/login";
         }
 
-        // 检查账号和密码
+        // 检查是否勾选记住我 为用户设置登录有效期
         int expiredSeconds = rememberMe ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
+        // 检查账号和密码
         Map<String, Object> map = userService.login(username, password, expiredSeconds);
         if (map.containsKey("ticket")) {
             Cookie cookie = new Cookie("ticket", map.get("ticket").toString());

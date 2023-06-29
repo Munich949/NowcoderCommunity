@@ -11,7 +11,7 @@ public interface UserMapper {
     String insertFields = "username, password, salt, email, type, status, activation_code, header_url, create_time";
 
     @Select("SELECT " + selectFields + " FROM user WHERE id = #{id}")
-    User selectById(@Param("id") int id);
+    User selectById(@Param("id") Integer id);
 
     @Select("SELECT " + selectFields + " FROM user WHERE username = #{username}")
     User selectByName(@Param("username") String username);
@@ -24,11 +24,11 @@ public interface UserMapper {
     int insertUser(User user);
 
     @Update("UPDATE user SET status = #{status} WHERE id = #{id}")
-    int updateStatus(@Param("id") int id, @Param("status") int status);
+    int updateStatus(@Param("id") Integer id, @Param("status") Integer status);
 
     @Update("UPDATE user SET header_url = #{headerUrl} WHERE id = #{id}")
-    int updateHeader(@Param("id") int id, @Param("headerUrl") String headerUrl);
+    int updateHeader(@Param("id") Integer id, @Param("headerUrl") String headerUrl);
 
     @Update("UPDATE user SET password = #{password} WHERE id = #{id}")
-    int updatePassword(@Param("id") int id, @Param("password") String password);
+    int updatePassword(@Param("id") Integer id, @Param("password") String password);
 }
