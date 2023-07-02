@@ -25,7 +25,7 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPostRows(userId);
     }
 
-    public int addDiscussionPost(DiscussPost post) {
+    public int addDiscussPost(DiscussPost post) {
         if (post == null) {
             throw new IllegalArgumentException("参数post不能为空！");
         }
@@ -36,8 +36,10 @@ public class DiscussPostService {
         post.setTitle(sensitiveFilter.filter(post.getTitle()));
         post.setContent(sensitiveFilter.filter(post.getContent()));
 
-        return discussPostMapper.insertDiscussionPost(post);
+        return discussPostMapper.insertDiscussPost(post);
     }
 
-
+    public DiscussPost findDiscussPostById(Integer id) {
+        return discussPostMapper.selectDiscussPostById(id);
+    }
 }

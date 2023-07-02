@@ -31,9 +31,4 @@
             and user_id = #{userId}
         </if>
     </select>
-
-    <insert id="insertDiscussionPost">
-        INSERT INTO discuss_post(<include refid="insertFields"/>)
-        VALUES (#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
-    </insert>
 </mapper>
