@@ -24,7 +24,8 @@ public class SensitiveFilter {
 
     @PostConstruct
     public void init() {
-        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("sensitive_word.txt"); BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));) {
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("sensitive_word.txt");
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
             String keyword;
             while ((keyword = bufferedReader.readLine()) != null) {
                 // 添加到前缀树
@@ -70,7 +71,7 @@ public class SensitiveFilter {
             return null;
         }
         // 指针1 指向前缀树
-        TrieNode tempNode = new TrieNode();
+        TrieNode tempNode = rootNode;
         // 指针2 指向文本 在前
         int begin = 0;
         // 指针3 指向文本 在后
@@ -145,9 +146,9 @@ public class SensitiveFilter {
     private class TrieNode {
 
         // 关键词结束标识
-        boolean isKeywordEnd = false;
+        private boolean isKeywordEnd = false;
         // 子节点(key是下级字符,value是下级节点)
-        Map<Character, TrieNode> subNodes = new HashMap<>();
+        private Map<Character, TrieNode> subNodes = new HashMap<>();
 
         public boolean isKeywordEnd() {
             return isKeywordEnd;
