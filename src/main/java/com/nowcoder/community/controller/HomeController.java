@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nowcoder.community.pojo.DiscussPost;
 import com.nowcoder.community.pojo.User;
-import com.nowcoder.community.service.DiscussService;
+import com.nowcoder.community.service.DiscussPostService;
 import com.nowcoder.community.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class HomeController {
     @Autowired
     private UserService userService;
     @Autowired
-    private DiscussService discussService;
+    private DiscussPostService discussPostService;
 
     // 处理首页请求的方法，支持分页
     @GetMapping(value = {"/index", "/index/{page}"})
@@ -37,7 +37,7 @@ public class HomeController {
         // 使用PageHelper进行分页设置，每页显示10条数据
         PageHelper.startPage(page, 10);
         // 调用discussService的findDiscussPosts方法获取帖子列表
-        List<DiscussPost> list = discussService.findDiscussPosts(0);
+        List<DiscussPost> list = discussPostService.findDiscussPosts(0);
         // 创建一个List<Map<String, Object>>用于存储帖子和对应的用户信息
         List<Map<String, Object>> discussPosts = new ArrayList<>();
         // 遍历帖子列表，将每个帖子和对应的用户信息存储在一个Map中，然后添加到discussPosts列表中
