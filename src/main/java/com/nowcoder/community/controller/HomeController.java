@@ -37,7 +37,9 @@ public class HomeController {
         // 使用PageHelper进行分页设置，每页显示10条数据
         PageHelper.startPage(page, 10);
         // 调用discussService的findDiscussPosts方法获取帖子列表
-        List<DiscussPost> list = discussPostService.findDiscussPosts(0);
+        List<DiscussPost> discussPostList = discussPostService.findDiscussPosts(0);
+        PageInfo<DiscussPost> pageInfo = new PageInfo<>(discussPostList, 5);
+        List<DiscussPost> list = pageInfo.getList();
         // 创建一个List<Map<String, Object>>用于存储帖子和对应的用户信息
         List<Map<String, Object>> discussPosts = new ArrayList<>();
         // 遍历帖子列表，将每个帖子和对应的用户信息存储在一个Map中，然后添加到discussPosts列表中
@@ -50,7 +52,6 @@ public class HomeController {
         }
 
         // 使用PageInfo对象对帖子列表进行分页处理，每页显示5个分页导航
-        PageInfo<DiscussPost> pageInfo = new PageInfo<>(list, 5);
         // 将帖子列表和分页信息添加到Model对象中
         model.addAttribute("discussPosts", discussPosts);
         model.addAttribute("pageInfo", pageInfo);

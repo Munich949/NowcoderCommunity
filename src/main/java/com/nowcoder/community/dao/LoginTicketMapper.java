@@ -5,9 +5,9 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface LoginTicketMapper {
-    String sql = "id, user_id, ticket, status, expired";
+    String selectFields = "id, user_id, ticket, status, expired";
 
-    @Select("SELECT " + sql + " FROM login_ticket WHERE ticket = #{ticket}")
+    @Select("SELECT " + selectFields + " FROM login_ticket WHERE ticket = #{ticket}")
     LoginTicket selectByTicket(String ticket);
 
     @Insert("INSERT INTO login_ticket(user_id, ticket, status, expired) VALUES (#{userId}, #{ticket}, #{status}, #{expired})")
