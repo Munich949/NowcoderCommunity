@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/comment")
@@ -21,6 +20,7 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
+
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable("discussPostId") Integer discussionPostId, Comment comment) {
         comment.setUserId(hostHolder.getUser().getId());

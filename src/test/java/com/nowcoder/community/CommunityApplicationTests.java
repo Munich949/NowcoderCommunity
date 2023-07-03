@@ -2,6 +2,8 @@ package com.nowcoder.community;
 
 import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.LoginTicketMapper;
+import com.nowcoder.community.dao.MessageMapper;
+import com.nowcoder.community.pojo.Message;
 import com.nowcoder.community.util.MailClient;
 import com.nowcoder.community.util.SensitiveFilter;
 import org.junit.jupiter.api.Test;
@@ -9,11 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.thymeleaf.TemplateEngine;
 
+import java.util.List;
+
 @SpringBootTest
 class CommunityApplicationTests {
 
     @Autowired
     private DiscussPostMapper discussPostMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Autowired
     private MailClient mailClient;
@@ -102,15 +109,36 @@ class CommunityApplicationTests {
 //
 //    }
 
-    @Test
-    public void testSensitiveFilter() {
-        String text = "这里可以赌博,可以嫖娼,可以吸毒,可以操你妈,哈哈哈，傻逼!";
-        text = sensitiveFilter.filter(text);
-        System.out.println(text);
+//    @Test
+//    public void testSensitiveFilter() {
+//        String text = "这里可以赌博,可以嫖娼,可以吸毒,可以操你妈,哈哈哈，傻逼!";
+//        text = sensitiveFilter.filter(text);
+//        System.out.println(text);
+//
+//        text = "这里可以☆赌☆博☆,可以☆嫖☆娼☆,可以☆操☆你☆妈☆,哈哈哈，☆傻☆逼☆!";
+//        text = sensitiveFilter.filter(text);
+//        System.out.println(text);
+//    }
 
-        text = "这里可以☆赌☆博☆,可以☆嫖☆娼☆,可以☆操☆你☆妈☆,哈哈哈，☆傻☆逼☆!";
-        text = sensitiveFilter.filter(text);
-        System.out.println(text);
+    @Test
+    public void test() {
+        List<Message> messages = messageMapper.selectConversations(111);
+        for (Message message : messages) {
+            System.out.println(message);
+        }
+
+        System.out.println(messageMapper.selectConversationCount(111));
+
+        messages = messageMapper.selectLetters("111_112");
+        for (Message message : messages) {
+            System.out.println(message);
+        }
+
+        System.out.println(messageMapper.selectLetterCount("111_112"));
+
+        System.out.println(messageMapper.selectLetterUnreadCount(131,"111_131"));
+
+
     }
 
 

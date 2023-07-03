@@ -230,7 +230,7 @@
                     </li>
                     <div th:each="pageNum : ${pageInfo.navigatepageNums}">
                         <li class="page-item" th:class="${pageNum == pageInfo.pageNum ? 'active' : ''}">
-                            <a class="page-link" th:href="@{'/discuss/detail/' + ${post.id} + '/' + ${pageInfo.nextPage}}" th:text="${pageNum}">
+                            <a class="page-link" th:href="@{'/discuss/detail/' + ${post.id} + '/' + ${pageNum }}" th:text="${pageNum}">
                             </a>
                         </li>
                     </div>

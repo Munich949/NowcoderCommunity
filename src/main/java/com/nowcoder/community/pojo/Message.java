@@ -11,13 +11,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Comment {
+public class Message {
 
     private Integer id;
-    private Integer userId;
-    private Integer entityType;
-    private Integer entityId;
-    private Integer targetId;
+    private Integer fromId;
+    private Integer toId;
+    private String conversationId;
     private String content;
     private Integer status;
     private LocalDateTime createTime;
