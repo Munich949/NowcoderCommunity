@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -20,5 +20,5 @@ public class Comment {
     private int targetId;
     private String content;
     private int status;
-    private Date createTime;
+    private LocalDateTime createTime;
 }

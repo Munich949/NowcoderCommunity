@@ -22,4 +22,7 @@ public interface DiscussPostMapper {
 
     @Select("SELECT " + selectFields + " FROM discuss_post WHERE id = #{id}")
     DiscussPost selectDiscussPostById(@Param("id") Integer id);
+
+    @Update("UPDATE discuss_post SET comment_count = #{commentCount} WHERE id = #{id}")
+    int updateCommentCount(@Param("id") Integer id, @Param("commentCount") int commentCount);
 }

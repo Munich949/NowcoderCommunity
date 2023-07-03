@@ -144,7 +144,7 @@
                             这开课时间是不是有点晚啊。。。
                         </div>
                         <div class="mt-4 text-muted font-size-12">
-                            <span>发布于 <b th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>
+                            <span>发布于 <b th:text="${#temporals.format(cvo.comment.createTime, 'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>
                             <ul class="d-inline float-right">
                                 <li class="d-inline ml-2">
                                     <a href="javascript:;"
@@ -173,7 +173,7 @@
                                     <span th:utext="${rvo.reply.content}">这个是直播时间哈，觉得晚的话可以直接看之前的完整录播的~</span>
                                 </div>
                                 <div class="mt-3">
-                                    <span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
+                                    <span th:text="${#temporals.format(rvo.reply.createTime, 'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
                                     <ul class="d-inline float-right">
                                         <li class="d-inline ml-2">
                                             <a href="javascript:;"
@@ -197,7 +197,7 @@
                                                 <input type="hidden" name="targetId" th:value="${rvo.user.id}">
                                             </div>
                                             <div class="text-right mt-2">
-                                                <button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+                                                <button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
                                             </div>
                                         </form>
                                     </div>
@@ -206,17 +206,16 @@
 
                             <!-- 回复输入框 -->
                             <li class="pb-3 pt-3">
-                                <form method="post" th:action="@{|/comment/add/${post.id}|}">
-                                    <div>
-                                        <input type="text" class="input-size" name="content"
-                                               placeholder="请输入你的观点"/>
-                                        <input type="hidden" name="entityType" value="2">
-                                        <input type="hidden" name="entityId" th:value="${cvo.comment.id}">
-                                    </div>
-                                    <div class="text-right mt-2">
-                                        <button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
-                                    </div>
-                                </form>
+                            <form method="post" th:action="@{|/comment/add/${post.id}|}">
+                                <div>
+                                    <input type="text" class="input-size" name="content" placeholder="请输入你的观点"/>
+                                    <input type="hidden" name="entityType" value="2">
+                                    <input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+                                </div>
+                                <div class="text-right mt-2">
+                                    <button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+                                </div>
+                            </form>
                             </li>
                         </ul>
                     </div>
@@ -244,14 +243,15 @@
         </div>
         <!-- 回帖输入 -->
         <div class="container mt-3">
-            <form class="replyform">
+            <form class="replyform" method="post" th:action="@{|/comment/add/${post.id}|}">
                 <p class="mt-3">
                     <a name="replyform"></a>
-                    <textarea placeholder="在这里畅所欲言你的看法吧!"></textarea>
+                    <textarea placeholder="在这里畅所欲言你的看法吧!" name="content"></textarea>
+                    <input type="hidden" name="entityType" value="1">
+                    <input type="hidden" name="entityId" th:value="${post.id}">
                 </p>
                 <p class="text-right">
-                    <button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;
-                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</button>
                 </p>
             </form>
         </div>
