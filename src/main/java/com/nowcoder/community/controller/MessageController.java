@@ -34,6 +34,7 @@ public class MessageController {
     public String getLetterList(@PathVariable("page") Integer page, Model model) {
         User user = hostHolder.getUser();
         PageHelper.startPage(page, 10);
+        // 该用户的所有私信
         List<Message> list = messageService.findConversations(user.getId());
         PageInfo<Message> pageInfo = new PageInfo<>(list, 5);
         List<Message> conversationList = pageInfo.getList();
@@ -41,9 +42,13 @@ public class MessageController {
         if (conversationList != null) {
             for (Message message : conversationList) {
                 Map<String, Object> map = new HashMap<>();
+                // 单条私信
                 map.put("conversation", message);
+                // 私信对话数量
                 map.put("letterCount", messageService.findLetterCount(message.getConversationId()));
+                // 未读消息数
                 map.put("unreadCount", messageService.findLetterUnreadCount(user.getId(), message.getConversationId()));
+                // 目标对象
                 int targetId = user.getId() == message.getFromId() ? message.getToId() : message.getFromId();
                 map.put("target", userService.findUserById(targetId));
 
@@ -71,7 +76,9 @@ public class MessageController {
         if (letterList != null) {
             for (Message message : letterList) {
                 Map<String, Object> map = new HashMap<>();
+                // 私信内容
                 map.put("letter", message);
+                // 发送人
                 map.put("fromUser", userService.findUserById(message.getFromId()));
                 letters.add(map);
             }
@@ -85,6 +92,12 @@ public class MessageController {
         return "site/letter-detail";
     }
 
+    /**
+     * 根据conversationId(111_112)拆解发送人和接收人
+     *
+     * @param conversationId
+     * @return
+     */
     private User getLetterTarget(String conversationId) {
         String[] ids = conversationId.split("_");
         int id0 = Integer.parseInt(ids[0]);

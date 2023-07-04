@@ -15,5 +15,5 @@ public interface LoginTicketMapper {
     int insertLoginTicket(LoginTicket loginTicket);
 
     @Update("UPDATE login_ticket SET status = #{status} WHERE ticket = #{ticket}")
-    int updateStatus(String ticket, int status);
+    int updateStatus(@Param("ticket") String ticket, @Param("status") int status);
 }
