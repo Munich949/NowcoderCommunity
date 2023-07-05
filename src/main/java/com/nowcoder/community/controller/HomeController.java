@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.nowcoder.community.pojo.DiscussPost;
 import com.nowcoder.community.pojo.User;
 import com.nowcoder.community.service.DiscussPostService;
+import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.util.CommunityConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +22,15 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-public class HomeController {
+public class HomeController implements CommunityConstant {
 
     @Autowired
     private UserService userService;
     @Autowired
     private DiscussPostService discussPostService;
+
+    @Autowired
+    private LikeService likeService;
 
     // 处理首页请求的方法，支持分页
     @GetMapping(value = {"/index", "/index/{page}"})
@@ -43,12 +48,17 @@ public class HomeController {
         // 创建一个List<Map<String, Object>>用于存储帖子和对应的用户信息
         List<Map<String, Object>> discussPosts = new ArrayList<>();
         // 遍历帖子列表，将每个帖子和对应的用户信息存储在一个Map中，然后添加到discussPosts列表中
-        for (DiscussPost post : list) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("post", post);
-            User user = userService.findUserById(post.getUserId());
-            map.put("user", user);
-            discussPosts.add(map);
+        if (list != null) {
+            for (DiscussPost post : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
+                User user = userService.findUserById(post.getUserId());
+                map.put("user", user);
+
+                Long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
+                discussPosts.add(map);
+            }
         }
 
         // 使用PageInfo对象对帖子列表进行分页处理，每页显示5个分页导航

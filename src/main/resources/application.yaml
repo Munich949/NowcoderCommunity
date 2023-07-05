@@ -10,7 +10,6 @@ spring:
     livereload:
       enabled: true
 
-
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/nowcoder
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,6 +29,16 @@ spring:
             enabled: true
     protocol: smtps
 
+  redis:
+    host: 43.143.177.141
+    port: 6379
+    password: 949686
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
 
   # 指定mapper映射文件位置
 mybatis:

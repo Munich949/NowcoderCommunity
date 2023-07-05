@@ -33,7 +33,7 @@ public class LoginController implements CommunityConstant {
     private String contextPath;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private Producer kaptchaProducer;
