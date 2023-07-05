@@ -58,4 +58,9 @@ public class HomeController {
         // 返回视图名称"index"
         return "index";
     }
+
+    @GetMapping("/error")
+    public String getErrorPage() {
+        return "error/500";
+    }
 }
