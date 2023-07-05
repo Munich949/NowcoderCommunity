@@ -6,17 +6,18 @@ import com.nowcoder.community.pojo.Message;
 import com.nowcoder.community.pojo.User;
 import com.nowcoder.community.service.MessageService;
 import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 public class MessageController {
@@ -49,7 +50,7 @@ public class MessageController {
                 // 未读消息数
                 map.put("unreadCount", messageService.findLetterUnreadCount(user.getId(), message.getConversationId()));
                 // 目标对象
-                int targetId = user.getId() == message.getFromId() ? message.getToId() : message.getFromId();
+                int targetId = Objects.equals(user.getId(), message.getFromId()) ? message.getToId() : message.getFromId();
                 map.put("target", userService.findUserById(targetId));
 
                 conversations.add(map);
@@ -89,6 +90,12 @@ public class MessageController {
         model.addAttribute("target", getLetterTarget(conversationId));
         model.addAttribute("pageInfo", pageInfo);
 
+        List<Integer> ids = getLetterIds(letterList);
+        System.out.println(ids);
+        if (!ids.isEmpty()) {
+            messageService.readMessage(ids);
+        }
+
         return "site/letter-detail";
     }
 
@@ -108,5 +115,42 @@ public class MessageController {
         } else {
             return userService.findUserById(id0);
         }
+    }
+
+    // 获取未读的消息id
+    private List<Integer> getLetterIds(List<Message> letterList) {
+        List<Integer> ids = new ArrayList<>();
+
+        if (letterList != null) {
+            for (Message message : letterList) {
+                if ((Objects.equals(hostHolder.getUser().getId(), message.getToId())) && (message.getStatus() == 0)) {
+                    ids.add(message.getId());
+                }
+            }
+        }
+
+        return ids;
+    }
+
+    @PostMapping("/letter/send")
+    @ResponseBody
+    public String addMessage(String toName, String content) {
+        User target = userService.findUserByUsername(toName);
+        if (target == null) {
+            return CommunityUtil.getJSONString(1, "目标用户不存在!");
+        }
+        Message message = new Message();
+        message.setFromId(hostHolder.getUser().getId());
+        message.setStatus(0);
+        message.setContent(content);
+        message.setToId(target.getId());
+        if (message.getFromId() < message.getToId()) {
+            message.setConversationId(message.getFromId() + "_" + message.getToId());
+        } else {
+            message.setConversationId(message.getToId() + "_" + message.getFromId());
+        }
+        message.setCreateTime(LocalDateTime.now());
+        messageService.addMessage(message);
+        return CommunityUtil.getJSONString(0);
     }
 }

@@ -4,9 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.nowcoder.community.dao.MessageMapper">
-    <sql id="selectFields">
-        id, from_id, to_id, conversation_id, content, status, create_time
-    </sql>
 
     <select id="selectLetterUnreadCount" resultType="int">
         SELECT COUNT(id)
@@ -18,4 +15,13 @@
             AND conversation_id = #{conversationId}
         </if>
     </select>
+
+    <update id="updateStatus">
+        UPDATE message
+        SET status = #{status}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>
