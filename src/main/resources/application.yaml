@@ -4,6 +4,13 @@ server:
     context-path: /community
 # 数据源基本配置
 spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/nowcoder
     driver-class-name: com.mysql.cj.jdbc.Driver
