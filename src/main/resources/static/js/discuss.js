@@ -9,7 +9,6 @@ function like(btn, entityType, entityId, entityUserId, postId) {
         CONTEXT_PATH + "/like",
         {"entityType": entityType, "entityId": entityId, "entityUserId": entityUserId, "postId": postId},
         function (data) {
-            console.log(entityType, entityId, entityUserId, postId)
             data = $.parseJSON(data);
             if (data.code == 0) {
                 $(btn).children("i").text(data.likeCount);
