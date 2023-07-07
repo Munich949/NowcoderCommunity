@@ -28,6 +28,6 @@ public class RedisKeyUtil {
     // 某个实体拥有的粉丝（实体可以是人，也可以是帖子、评论等）
     // follower:entityType:entityId -> zset(userId, now)
     public static String getFollowerKey(Integer entityType, Integer entityId) {
-        return PREFIX_FOLLOWEE + SPLIT + entityType + SPLIT + entityId;
+        return PREFIX_FOLLOWER + SPLIT + entityType + SPLIT + entityId;
     }
 }
