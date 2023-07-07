@@ -4,6 +4,7 @@ import com.nowcoder.community.pojo.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated
 public interface LoginTicketMapper {
     String selectFields = "id, user_id, ticket, status, expired";
 
