@@ -20,7 +20,7 @@ public class FollowService {
             @Override
             public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
                 String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
-                String followerKey = RedisKeyUtil.getFolloweeKey(entityType, entityId);
+                String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
 
                 stringRedisTemplate.multi();
 
@@ -37,7 +37,7 @@ public class FollowService {
             @Override
             public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
                 String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
-                String followerKey = RedisKeyUtil.getFolloweeKey(entityType, entityId);
+                String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
 
                 stringRedisTemplate.multi();
 
