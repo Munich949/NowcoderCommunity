@@ -22,4 +22,7 @@ public interface CommentMapper {
 
     @Insert("INSERT INTO comment (" + insertFields + ") VALUES (#{userId}, #{entityType}, #{entityId}, #{targetId}, #{content}, #{status}, #{createTime})")
     int insertComment(Comment comment);
+
+    @Select("SELECT " + selectFields + " FROM comment WHERE id = #{id}")
+    Comment selectCommentsCountById(@Param("id") Integer id);
 }
