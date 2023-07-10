@@ -24,4 +24,15 @@
             #{id}
         </foreach>
     </update>
+
+    <select id="selectNoticeUnreadCount" resultType="int">
+        SELECT COUNT(id)
+        FROM message
+        WHERE status = 0
+        AND from_id = 1
+        AND to_id = #{userId}
+        <if test="topic != null">
+            AND conversation_id = #{topic}
+        </if>
+    </select>
 </mapper>

@@ -52,6 +52,5 @@ class KafkaConsumer {
     public void handleMessage(ConsumerRecord record) {
         System.out.println(record.value());
     }
-
-
+    
 }

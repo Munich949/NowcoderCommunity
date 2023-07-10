@@ -41,4 +41,19 @@ public interface MessageMapper {
     // 修改消息的状态（未读->已读）
     int updateStatus(@Param("ids") List<Integer> ids, @Param("status") Integer status);
 
+    // 查询某个主题下最新的通知
+    @Select("SELECT " + selectFields + " FROM message WHERE id IN (SELECT MAX(id) FROM message WHERE status != 2 AND from_id = 1 AND to_id = #{userId} AND conversation_id = #{topic})")
+    Message selectLatestNotice(Integer userId, String topic);
+
+    // 查询某个主题所包含的通知数量
+    @Select("SELECT COUNT(id) FROM message WHERE status != 2 AND from_id = 1 AND to_id = #{userId} AND conversation_id = #{topic}")
+    int selectNoticeCount(Integer userId, String topic);
+
+    // 查询未读的通知的数量
+    int selectNoticeUnreadCount(Integer userId, String topic);
+
+    // 查询某个主题所包含的通知列表
+    @Select("SELECT " + selectFields + " FROM message WHERE status != 2 AND from_id = 1 AND to_id = #{userId} AND conversation_id = #{topic} ORDER BY create_time DESC")
+    List<Message> selectNotices(Integer userId, String topic);
+
 }

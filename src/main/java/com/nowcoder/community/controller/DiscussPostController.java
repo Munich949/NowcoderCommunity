@@ -114,7 +114,6 @@ public class DiscussPostController implements CommunityConstant {
                 List<Map<String, Object>> replyVoList = new ArrayList<>();
                 if (replyList != null) {
                     for (Comment reply : replyList) {
-                        System.out.println("=========" + reply);
                         Map<String, Object> replyVo = new HashMap<>();
                         // 此条评论的单条回复
                         replyVo.put("reply", reply);
