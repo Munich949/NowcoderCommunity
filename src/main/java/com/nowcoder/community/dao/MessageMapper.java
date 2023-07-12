@@ -43,17 +43,17 @@ public interface MessageMapper {
 
     // 查询某个主题下最新的通知
     @Select("SELECT " + selectFields + " FROM message WHERE id IN (SELECT MAX(id) FROM message WHERE status != 2 AND from_id = 1 AND to_id = #{userId} AND conversation_id = #{topic})")
-    Message selectLatestNotice(Integer userId, String topic);
+    Message selectLatestNotice(@Param("userId") Integer userId, @Param("topic") String topic);
 
     // 查询某个主题所包含的通知数量
     @Select("SELECT COUNT(id) FROM message WHERE status != 2 AND from_id = 1 AND to_id = #{userId} AND conversation_id = #{topic}")
-    int selectNoticeCount(Integer userId, String topic);
+    int selectNoticeCount(@Param("userId") Integer userId, @Param("topic") String topic);
 
     // 查询未读的通知的数量
-    int selectNoticeUnreadCount(Integer userId, String topic);
+    int selectNoticeUnreadCount(@Param("userId") Integer userId, @Param("topic") String topic);
 
     // 查询某个主题所包含的通知列表
     @Select("SELECT " + selectFields + " FROM message WHERE status != 2 AND from_id = 1 AND to_id = #{userId} AND conversation_id = #{topic} ORDER BY create_time DESC")
-    List<Message> selectNotices(Integer userId, String topic);
+    List<Message> selectNotices(@Param("userId") Integer userId, @Param("topic") String topic);
 
 }

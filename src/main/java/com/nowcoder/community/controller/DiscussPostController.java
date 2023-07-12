@@ -2,8 +2,10 @@ package com.nowcoder.community.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.pojo.Comment;
 import com.nowcoder.community.pojo.DiscussPost;
+import com.nowcoder.community.pojo.Event;
 import com.nowcoder.community.pojo.User;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
@@ -42,6 +44,9 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -59,6 +64,15 @@ public class DiscussPostController implements CommunityConstant {
         discussPost.setStatus(0);
         discussPost.setCommentCount(0);
         discussPostService.addDiscussPost(discussPost);
+
+        // 触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(discussPost.getId());
+
+        eventProducer.fireEvent(event);
 
         return CommunityUtil.getJSONString(0, "发布成功");
     }

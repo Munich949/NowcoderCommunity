@@ -47,7 +47,6 @@ spring:
       enable-auto-commit: true
       auto-commit-interval: 3000
 
-
   # 指定mapper映射文件位置
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
@@ -59,7 +58,6 @@ mybatis:
 
   type-aliases-package: com.nowcoder.community.pojo
 
-
 logging:
   level:
     root: info
@@ -68,3 +66,6 @@ community:
   path:
     domain: http://localhost:8080
     upload: f:/nowcoder/upload
+
+elasticSearch:
+  url: 127.0.0.1:9200
