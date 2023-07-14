@@ -1,7 +1,6 @@
 package com.nowcoder.community.service;
 
 import com.alibaba.fastjson2.JSON;
-import com.nowcoder.community.dao.LoginTicketMapper;
 import com.nowcoder.community.dao.UserMapper;
 import com.nowcoder.community.pojo.LoginTicket;
 import com.nowcoder.community.pojo.User;
@@ -9,20 +8,17 @@ import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.MailClient;
 import com.nowcoder.community.util.RedisKeyUtil;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -293,5 +289,18 @@ public class UserService implements CommunityConstant {
     private void clearCache(int userId) {
         String redisKey = RedisKeyUtil.getUserKey(userId);
         stringRedisTemplate.delete(redisKey);
+    }
+
+
+    public Collection<? extends GrantedAuthority> getAuthorities(Integer userId) {
+        User user = this.findUserById(userId);
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add((GrantedAuthority) () -> switch (user.getType()) {
+            case 1 -> AUTHORITY_ADMIN;
+            case 2 -> AUTHORITY_MODERATOR;
+            default -> AUTHORITY_USER;
+        });
+        return authorities;
     }
 }
