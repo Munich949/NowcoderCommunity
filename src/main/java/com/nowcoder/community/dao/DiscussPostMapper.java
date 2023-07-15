@@ -25,4 +25,10 @@ public interface DiscussPostMapper {
 
     @Update("UPDATE discuss_post SET comment_count = #{commentCount} WHERE id = #{id}")
     int updateCommentCount(@Param("id") Integer id, @Param("commentCount") int commentCount);
+
+    @Update("UPDATE discuss_post SET type = #{type} WHERE id = #{id}")
+    int updateType(@Param("id") Integer id, @Param("type") Integer type);
+
+    @Update("UPDATE discuss_post SET status = #{status} WHERE id = #{id}")
+    int updateStatus(@Param("id") Integer id, @Param("status") Integer status);
 }
