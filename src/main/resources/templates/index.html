@@ -71,10 +71,10 @@
                 <!-- 筛选条件 -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">最新</a>
+                        <a th:class="|nav-link ${orderMode==0?'active':''}|" th:href="@{/index(orderMode=0)}">最新</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">最热</a>
+                        <a th:class="|nav-link ${orderMode==1?'active':''}|" th:href="@{/index(orderMode=1)}">最热</a>
                     </li>
                 </ul>
                 <button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal"
@@ -154,19 +154,19 @@
             <!-- 分页 -->
             <nav class="mt-5" th:if="${pageInfo.pages > 1}">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" th:href="@{/index/1}">首页</a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{'/index/1?orderMode=' + ${orderMode==null?1:orderMode}}">首页</a></li>
                     <li th:class="'page-item ' + ${pageInfo.isFirstPage ? 'disabled' : ''}"><a class="page-link"
-                                                                                               th:href="@{'/index/' + ${pageInfo.prePage}}">上一页</a>
+                                                                                               th:href="@{'/index/' + ${pageInfo.prePage} + '?orderMode=' + ${orderMode==null?1:orderMode}}">上一页</a>
                     </li>
                     <div th:each="pageNum : ${pageInfo.navigatepageNums}">
                         <li class="page-item" th:class="${pageNum == pageInfo.pageNum ? 'active' : ''}"><a
-                                class="page-link" th:href="@{'/index/' + ${pageNum}}"
+                                class="page-link" th:href="@{'/index/' + ${pageNum} + '?orderMode=' + ${orderMode==null?1:orderMode}}"
                                 th:text="${pageNum}"></a></li>
                     </div>
                     <li th:class="'page-item ' + ${pageInfo.isLastPage ? 'disabled' : ''}"><a class="page-link"
-                                                                                              th:href="@{'/index/' + ${pageInfo.nextPage}}">下一页</a>
+                                                                                              th:href="@{'/index/' + ${pageInfo.nextPage} + '?orderMode=' + ${orderMode==null?1:orderMode}}">下一页</a>
                     </li>
-                    <li class="page-item"><a class="page-link" th:href="@{'/index/' + ${pageInfo.pages}}">末页</a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{'/index/' + ${pageInfo.pages} + '?orderMode=' + ${orderMode==null?1:orderMode}}">末页</a></li>
                 </ul>
             </nav>
         </div>

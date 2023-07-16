@@ -12,7 +12,7 @@ public interface DiscussPostMapper {
 
     String insertFields = "user_id, title, content, type, status, create_time, comment_count, score";
 
-    List<DiscussPost> selectDiscussPosts(@Param("userId") Integer userId);
+    List<DiscussPost> selectDiscussPosts(@Param("userId") Integer userId, @Param("orderMode") Integer orderMode);
 
     int selectDiscussPostRows(@Param("userId") Integer userId);
 
@@ -31,4 +31,7 @@ public interface DiscussPostMapper {
 
     @Update("UPDATE discuss_post SET status = #{status} WHERE id = #{id}")
     int updateStatus(@Param("id") Integer id, @Param("status") Integer status);
+
+    @Update("UPDATE discuss_post SET score = #{score} WHERE id = #{id}")
+    int updateScore(Integer id, Double score);
 }

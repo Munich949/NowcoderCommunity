@@ -12,8 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,8 @@ public class HomeController implements CommunityConstant {
 
     // 处理首页请求的方法，支持分页
     @GetMapping(value = {"/index", "/index/{page}"})
-    public String getIndexPage(Model model, @PathVariable(required = false) Integer page) {
+    public String getIndexPage(Model model, @PathVariable(required = false) Integer page,
+                               @RequestParam(name = "orderMode", defaultValue = "0") Integer orderMode) {
         // 如果page参数为null，则默认为第一页
         if (page == null) {
             page = 1;
@@ -42,7 +42,7 @@ public class HomeController implements CommunityConstant {
         // 使用PageHelper进行分页设置，每页显示10条数据
         PageHelper.startPage(page, 10);
         // 调用discussService的findDiscussPosts方法获取帖子列表
-        List<DiscussPost> discussPostList = discussPostService.findDiscussPosts(0);
+        List<DiscussPost> discussPostList = discussPostService.findDiscussPosts(0, orderMode);
         PageInfo<DiscussPost> pageInfo = new PageInfo<>(discussPostList, 5);
         List<DiscussPost> list = pageInfo.getList();
         // 创建一个List<Map<String, Object>>用于存储帖子和对应的用户信息
@@ -65,6 +65,7 @@ public class HomeController implements CommunityConstant {
         // 将帖子列表和分页信息添加到Model对象中
         model.addAttribute("discussPosts", discussPosts);
         model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("orderMode", orderMode);
         // 返回视图名称"index"
         return "index";
     }
@@ -72,5 +73,10 @@ public class HomeController implements CommunityConstant {
     @GetMapping("/error")
     public String getErrorPage() {
         return "error/500";
+    }
+
+    @GetMapping("/denied")
+    public String getDeniedPage() {
+        return "/error/404";
     }
 }
