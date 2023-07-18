@@ -80,3 +80,10 @@ community:
 
 elasticSearch:
   url: 127.0.0.1:9200
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+        exclude: info,caches
